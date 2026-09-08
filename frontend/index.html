@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bureau of Indian Standards (BIS) | Official Compliance AI Copilot</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              gov: {
+                navy: '#0B2545',
+                blue: '#134074',
+                header: '#0E2A47',
+                saffron: '#FF9933',
+                green: '#138808',
+                gold: '#C59B27',
+                slate: '#F8FAFC',
+                border: '#D1D5DB'
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Google Fonts Inter & Noto Sans for Indian Languages -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="h-full bg-slate-100 text-slate-900 font-sans antialiased">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
