@@ -22,14 +22,18 @@ import StatusBadge from '../components/StatusBadge';
 import { askBIS } from '../services/api';
 import { SAMPLE_PROMPTS } from '../data/demoData';
 
-export default function AskBIS({ initialQuery }) {
+export default function AskBIS({ initialQuery, personaMode, currentLanguage }) {
   const [question, setQuestion] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [attachedFileName, setAttachedFileName] = useState(null);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      text: 'Namaste! I am your BIS AI Compliance Copilot. Ask me anything about Indian Standards (IS codes), ISI marking, compulsory registration (CRS), quality control orders (QCOs), lab testing, or certification documentation.',
+      text: `Namaste! 👋 I am your KNOW AI Assistant — your guide to Indian Standards and BIS services.
+
+I can help you discover the right Indian Standard, understand BIS requirements, find applicable standards, explain QCOs and certification rules, and answer questions using official BIS knowledge.
+
+You are currently using the ${personaMode === 'consumer' ? 'Consumer' : personaMode === 'auditor' ? 'Auditor' : 'Industry'} view.`,
       sources: [
         { title: 'Bureau of Indian Standards Portal', url: 'https://www.bis.gov.in' }
       ],
@@ -200,7 +204,7 @@ export default function AskBIS({ initialQuery }) {
             </div>
             <div>
               <h3 className="text-sm font-bold text-[#0B2545] flex items-center gap-2">
-                BIS COMPLIANCE COPILOT
+               KNOW AI ASSISTANT
                 <StatusBadge status="official" label="Live RAG" size="sm" />
               </h3>
               <p className="text-[11px] text-slate-500">
@@ -234,7 +238,7 @@ export default function AskBIS({ initialQuery }) {
               </div>
               <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 text-blue-900 text-sm flex items-center gap-3">
                 <Sparkles className="w-4 h-4 text-blue-600 animate-spin" />
-                <span>Retrieving Indian Standards & BIS notifications...</span>
+                <span>Searching official BIS knowledge & Indian Standards...</span>
               </div>
             </div>
           )}
@@ -321,7 +325,11 @@ export default function AskBIS({ initialQuery }) {
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={isRecording ? "Listening for your question..." : "Ask anything about Indian Standards (e.g. What is BIS? or Tell me about certification requirements)..."}
+              placeholder={
+  isRecording
+    ? "Listening for your question..."
+    : "Ask me to find, explain or understand an Indian Standard..."
+}
               className="flex-1 px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-slate-900 placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#0B2545] resize-none"
             />
 

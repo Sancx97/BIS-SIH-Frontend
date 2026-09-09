@@ -3,13 +3,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 app = FastAPI()
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://YOUR-VERCEL-FRONTEND.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 class QuestionRequest(BaseModel):
     question: str
@@ -29,7 +34,10 @@ def ask_bis(request: QuestionRequest):
         answer = "BIS stands for Bureau of Indian Standards."
 
     elif "certification" in question:
-        answer = "BIS certification demonstrates conformity with applicable Indian Standards."
+        answer = (
+            "BIS certification demonstrates conformity with applicable "
+            "Indian Standards."
+        )
 
     else:
         answer = (
@@ -39,6 +47,7 @@ def ask_bis(request: QuestionRequest):
 
     return {
         "answer": answer,
+        "confidence": "medium",
         "sources": [
             {
                 "title": "BIS Official Website",

@@ -1,139 +1,292 @@
 import React from 'react';
 import {
   Home,
-  MessageSquare,
-  BarChart3,
-  FileCheck2,
-  QrCode,
-  Search,
-  Bell,
-  Settings,
+  Brain,
+  ClipboardCheck,
   ShieldCheck,
+  Search,
+  FileCheck,
+  Bell,
+  ChevronRight,
   X,
-  ExternalLink,
-  Award
 } from 'lucide-react';
 
-export default function Sidebar({ activeTab, onTabChange, mobileOpen, onMobileClose }) {
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home, badge: null },
-    { id: 'ask', label: 'Ask BIS Copilot', icon: MessageSquare, badge: 'Live RAG' },
-    { id: 'analyzer', label: 'Compliance Analyzer', icon: BarChart3, badge: 'What-If' },
-    { id: 'auditor', label: 'Document Auditor', icon: FileCheck2, badge: 'Pre-Fill' },
-    { id: 'scanner', label: 'ISI Mark Authenticity', icon: QrCode, badge: 'CML Check' },
-    { id: 'explorer', label: 'Indian Standards Directory', icon: Search, badge: 'IS DB' },
-    { id: 'alerts', label: 'QCO & Regulatory Alerts', icon: Bell, badge: 'Gazette' }
+function Sidebar({
+  activeTab,
+  onTabChange,
+  mobileOpen,
+  onMobileClose,
+}) {
+  const modules = [
+    {
+      id: 'know',
+      label: 'KNOW',
+      subtitle: 'Discover & Understand',
+      icon: Brain,
+      items: [
+        {
+          id: 'ask',
+          label: 'AI Assistant',
+          icon: Brain,
+          badge: 'RAG',
+        },
+        {
+          id: 'explorer',
+          label: 'Standards Search',
+          icon: Search,
+          badge: 'IS DB',
+        },
+      ],
+    },
+    {
+      id: 'comply',
+      label: 'COMPLY',
+      subtitle: 'Meet Requirements',
+      icon: ClipboardCheck,
+      items: [
+        {
+          id: 'analyzer',
+          label: 'AI Assistant',
+          icon: Brain,
+          badge: 'AI',
+        },
+        {
+          id: 'auditor',
+          label: 'Document Auditor',
+          icon: FileCheck,
+          badge: 'Pre-Fill',
+        },
+        {
+          id: 'alerts',
+          label: 'QCO & Alerts',
+          icon: Bell,
+          badge: 'Live',
+        },
+      ],
+    },
+    {
+      id: 'verify',
+      label: 'VERIFY',
+      subtitle: 'Trust & Authenticate',
+      icon: ShieldCheck,
+      items: [
+        {
+          id: 'scanner',
+          label: 'AI Assistant',
+          icon: Brain,
+          badge: 'AI',
+        },
+      ],
+    },
   ];
+
+  const isModuleActive = (module) =>
+    module.items.some((item) => item.id === activeTab);
+
+  const handleNavigation = (id) => {
+    onTabChange(id);
+
+    if (onMobileClose) {
+      onMobileClose();
+    }
+  };
 
   return (
     <>
-      {/* Mobile Backdrop */}
+      {/* Mobile backdrop */}
       {mobileOpen && (
         <div
+          className="fixed inset-0 bg-black/40 z-40 lg:hidden"
           onClick={onMobileClose}
-          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs lg:hidden"
         />
       )}
 
-      {/* Sidebar Container */}
+      {/* Sidebar */}
       <aside
-        className={`fixed lg:static top-0 left-0 z-50 h-full w-64 bg-[#0B2545] text-slate-100 border-r border-slate-800 flex flex-col justify-between transition-transform duration-300 ease-in-out ${
-          mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        }`}
+        className={`
+          fixed lg:sticky
+          top-0 left-0
+          z-50
+          h-screen
+          w-72
+          bg-slate-950
+          text-white
+          flex flex-col
+          border-r border-slate-800
+          transform transition-transform duration-300
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}
       >
-        <div>
-          {/* Header Branding */}
-          <div className="p-4 sm:p-5 flex items-center justify-between border-b border-slate-800/80 bg-[#091E38]">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#134074] border border-amber-400/40 flex items-center justify-center text-amber-400 shadow-xs shrink-0">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="flex items-center gap-1">
-                  <span className="font-bold text-sm text-white tracking-wide">BIS Copilot</span>
-                </div>
-                <p className="text-[10px] text-amber-300 font-medium">Compliance Assistant</p>
-              </div>
+        {/* Brand */}
+        <div className="h-20 px-5 flex items-center justify-between border-b border-slate-800">
+          <button
+            onClick={() => handleNavigation('dashboard')}
+            className="flex items-center gap-3 text-left"
+          >
+            <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
+              <ShieldCheck className="w-6 h-6 text-slate-950" />
             </div>
 
-            <button
-              onClick={onMobileClose}
-              className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+            <div>
+              <div className="font-bold text-lg tracking-tight">
+                BIS Copilot
+              </div>
+              <div className="text-xs text-slate-400">
+                Compliance Assistant
+              </div>
+            </div>
+          </button>
 
-          {/* Navigation Links */}
-          <nav className="p-3 space-y-1">
-            <p className="px-3 pt-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-              Copilot Modules
-            </p>
-
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = activeTab === item.id;
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => {
-                    onTabChange(item.id);
-                    if (onMobileClose) onMobileClose();
-                  }}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-semibold transition-all ${
-                    isActive
-                      ? 'bg-[#134074] text-white font-bold border-l-4 border-amber-400 shadow-xs'
-                      : 'text-slate-300 hover:bg-slate-800/80 hover:text-white'
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-amber-300' : 'text-slate-400'}`} />
-                    <span>{item.label}</span>
-                  </div>
-
-                  {item.badge && (
-                    <span
-                      className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ${
-                        isActive
-                          ? 'bg-amber-500 text-slate-950'
-                          : 'bg-slate-800 text-slate-400 border border-slate-700'
-                      }`}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </nav>
+          {/* Mobile close */}
+          <button
+            onClick={onMobileClose}
+            className="lg:hidden p-2 rounded-lg hover:bg-slate-800"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
-        {/* Bottom Area */}
-        <div className="p-3 border-t border-slate-800 space-y-2 bg-[#091E38]">
-          <a
-            href="https://www.bis.gov.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-between p-2.5 rounded-lg bg-[#0B2545] border border-slate-700 text-slate-200 hover:text-white hover:border-amber-400 text-xs transition-all"
+        {/* Home */}
+        <div className="px-3 pt-4">
+          <button
+            onClick={() => handleNavigation('dashboard')}
+            className={`
+              w-full flex items-center gap-3 px-3 py-2.5 rounded-xl
+              text-sm font-medium transition
+              ${
+                activeTab === 'dashboard'
+                  ? 'bg-white text-slate-950'
+                  : 'text-slate-300 hover:bg-slate-900 hover:text-white'
+              }
+            `}
           >
-            <div className="flex items-center gap-2">
-              <Award className="w-3.5 h-3.5 text-amber-400" />
-              <span className="font-semibold text-[11px]">Visit Official BIS (bis.gov.in)</span>
-            </div>
-            <ExternalLink className="w-3 h-3 text-slate-400" />
-          </a>
+            <Home className="w-4 h-4" />
+            Dashboard
+          </button>
+        </div>
 
-          <div className="flex items-center justify-between px-3 py-1.5 text-xs text-slate-400">
-            <div className="flex items-center gap-1.5">
-              <Settings className="w-3.5 h-3.5 text-slate-400" />
-              <span>v2.4 SIH Prototype</span>
+        {/* Modules */}
+        <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
+          {modules.map((module) => {
+            const ModuleIcon = module.icon;
+            const active = isModuleActive(module);
+
+            return (
+              <div key={module.id}>
+                {/* Module heading */}
+                <button
+                  onClick={() => handleNavigation(module.items[0].id)}
+                  className={`
+                    w-full flex items-center gap-3 px-3 py-2 mb-1 rounded-xl
+                    transition
+                    ${
+                      active
+                        ? 'bg-slate-800'
+                        : 'hover:bg-slate-900'
+                    }
+                  `}
+                >
+                  <div
+                    className={`
+                      w-9 h-9 rounded-lg flex items-center justify-center
+                      ${
+                        active
+                          ? 'bg-white text-slate-950'
+                          : 'bg-slate-800 text-slate-300'
+                      }
+                    `}
+                  >
+                    <ModuleIcon className="w-5 h-5" />
+                  </div>
+
+                  <div className="flex-1 text-left">
+                    <div
+                      className={`text-sm font-bold tracking-wide ${
+                        active ? 'text-white' : 'text-slate-300'
+                      }`}
+                    >
+                      {module.label}
+                    </div>
+
+                    <div className="text-[11px] text-slate-500">
+                      {module.subtitle}
+                    </div>
+                  </div>
+
+                  <ChevronRight
+                    className={`w-4 h-4 ${
+                      active ? 'text-white' : 'text-slate-600'
+                    }`}
+                  />
+                </button>
+
+                {/* Module features */}
+                <div className="ml-5 pl-4 border-l border-slate-800 space-y-1">
+                  {module.items.map((item) => {
+                    const ItemIcon = item.icon;
+                    const selected = activeTab === item.id;
+
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => handleNavigation(item.id)}
+                        className={`
+                          w-full flex items-center gap-2.5
+                          px-3 py-2 rounded-lg
+                          text-sm transition
+                          ${
+                            selected
+                              ? 'bg-slate-800 text-white'
+                              : 'text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                          }
+                        `}
+                      >
+                        <ItemIcon className="w-4 h-4 shrink-0" />
+
+                        <span className="flex-1 text-left">
+                          {item.label}
+                        </span>
+
+                        {item.badge && (
+                          <span
+                            className={`
+                              text-[9px] px-1.5 py-0.5 rounded-md
+                              ${
+                                selected
+                                  ? 'bg-white text-slate-900'
+                                  : 'bg-slate-800 text-slate-500'
+                              }
+                            `}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </nav>
+
+        {/* Footer */}
+        <div className="p-4 border-t border-slate-800">
+          <div className="text-[11px] text-slate-500 leading-relaxed">
+            <div className="font-semibold text-slate-400 mb-1">
+              Smart India Hackathon 2026
             </div>
-            <span className="text-[10px] bg-amber-950 text-amber-300 border border-amber-800 px-1.5 py-0.5 rounded font-mono">
-              SIH Demo
-            </span>
+            <div>
+              AI-powered Intelligent Assistant
+            </div>
+            <div>
+              for Indian Standards & BIS Services
+            </div>
           </div>
         </div>
       </aside>
     </>
   );
 }
+
+export default Sidebar;
