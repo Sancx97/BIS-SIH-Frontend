@@ -8,7 +8,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://YOUR-VERCEL-FRONTEND.vercel.app",
+        "https://bis-sih-frontend-xbn3.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
